@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, user-scalable=no">
+
+<title>Fliperino</title>
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+    background-color: #111;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  #flip {
+    animation: flip 4s linear 0s infinite;
+  }
+
+  #text {
+    margin: 6em;
+    font-family: sans-serif;
+    font-size: 10pt;
+    text-align: center;
+  }
+
+  #text a {
+    color: #333;
+    text-decoration: none;
+  }
+
+  #text a:hover {
+    color: #666;
+    text-decoration: underline;
+  }
+
+  @keyframes flip {
+    0% {
+      transform: rotate(0deg);
+    }
+
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+</style>
+
+<div id="flip">
+  <img src="s8.png">
+</div>
+
+<div id="text">
+  <a href="https://stackoverflow.com/a/6124375/1650128" rel="noopener" target="_blank">stackoverflow.com/a/6124375/1650128</a>
+</div>
+
+<script>
+  // hack for autoplay in Chrome mobile
+  window.addEventListener('load', function () {
+    var audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    var source = audioCtx.createBufferSource();
+
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', 'spin.ogg');
+    xhr.responseType = 'arraybuffer';
+    xhr.addEventListener('load', function () {
+        audioCtx.decodeAudioData(xhr.response, function (buffer) {
+            source.buffer = buffer;
+            source.connect(audioCtx.destination);
+            source.loop = true;
+        });
+        source.start(0);
+    });
+    xhr.send();
+});
+</script>
